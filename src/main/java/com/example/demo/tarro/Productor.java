@@ -1,7 +1,4 @@
-package tarro;
-
-import com.example.distservice.dtos.ConsumerDto;
-import com.example.distservice.dtos.ProducerDto;
+package com.example.demo.tarro;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -18,12 +15,12 @@ import java.util.Scanner;
  */
 public class Productor {
 
-    public  String name;
-    public int amount;
+    public  int idproductor;
+    public int cantidad;
 
-    public Productor(String name, int amount) {
-        this.name = name;
-        this.amount = amount;
+    public Productor(int idproductor, int cantidad) {
+        this.idproductor = idproductor;
+        this.cantidad = cantidad;
     }
 
     public static void produceProducts(String url){
@@ -107,7 +104,7 @@ public class Productor {
                     produceProducts(url +"add");
                     break;
                 case 2:
-                    createReplica(url+"activateServerReply");
+                    replicar(url+"activateServerReply");
                     break;
                 case 3:
                     check = false;

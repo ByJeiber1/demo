@@ -1,5 +1,5 @@
-package tarro;
-
+package com.example.demo.tarro;
+import com.example.demo.tarro.JsonReader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 /*import common.ProductsChecker;
@@ -8,43 +8,46 @@ import json.JsonWriter;
 import products.ProductA;
 import products.ProductB;
 import products.ProductsToSend;*/
-import tarro.Inter;
+import com.example.demo.tarro.Inter;
 
 import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 /*
  * 
  * CAMBIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
  * xdd
  * 
  */
-public class TarroProductosextends extends UnicastRemoteObject implements Inter{
+public class TarroProductos extends UnicastRemoteObject implements Inter{
     //private int contained;
-    //private boolean full = false;
+    private boolean full = false;
     int productA;
     int productB;
+    List<JsonLog> transactions = new ArrayList<>();
     Gson gson = new GsonBuilder().create();
 
-    /*public Container() throws RemoteException {
+    public TarroProductos() throws RemoteException {
         super();
         try {
             productA = 600;
             productB = 400;
             transactions = JsonReader.getTransactionsFromJsonFile();
-            if(!ProductsChecker.checkProductsAAvailable(productsA) || !ProductsChecker.checkProductsBAvailable(productsB)){
+            /*if(!ProductsChecker.checkProductsAAvailable(productsA) || !ProductsChecker.checkProductsBAvailable(productsB)){
                 full = false;
             }else {
                 full = true;
-            }
+            }*/
         } catch (FileNotFoundException e) {
             productA = 600;
             productB = 400;
             transactions = new ArrayList<>();
         }
-    }*/
+    }
 
-    public synchronized String get(int amount, String type, String consumer) throws IOException {
+    public synchronized String get(int amount, String type, int consumer) throws IOException {
         while (!full) {
             try {
                 wait();
@@ -57,7 +60,7 @@ public class TarroProductosextends extends UnicastRemoteObject implements Inter{
 
         if (type.equals("A")) {
             int i = 0;
-            for (ProductA productA : productsA) {
+            for (TarroProductos producto : productos) {
                 if (i < amount) {
                     if (productA.isAvailable()){
                         productsAToReturn.add(productA);
@@ -69,6 +72,9 @@ public class TarroProductosextends extends UnicastRemoteObject implements Inter{
                     break;
                 }
             }
+
+
+            
             System.out.println("ProductsA to return: " + productsAToReturn);
             JsonWriter.AppendProductAtoJson(productsA);
             full = ProductsChecker.checkProductsAAvailable(productsA) && ProductsChecker.checkProductsBAvailable(productsB);
@@ -103,7 +109,7 @@ public class TarroProductosextends extends UnicastRemoteObject implements Inter{
 
     }
 
-    public synchronized void put(int value, String producer) throws IOException {
+    public synchronized void put(int value, int producer) throws IOException {
         contained = value;
         if (productsB == null) {
             productsB = new ArrayList<>();

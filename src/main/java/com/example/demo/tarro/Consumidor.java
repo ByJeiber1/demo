@@ -1,9 +1,7 @@
-package tarro;
+package com.example.demo.tarro;
 
-import com.example.distservice.dtos.ConsumerDto;
-import com.example.distservice.dtos.ProducerDto;
+
 import com.google.gson.Gson;
-import com.sun.jndi.toolkit.url.Uri;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
